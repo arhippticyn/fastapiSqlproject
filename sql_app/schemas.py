@@ -12,7 +12,7 @@ class Item(ItemBase):
     owner_id: int
     
     class Config():
-        orm_mode = True
+        from_attributes = True
         
 class UserBase(BaseModel):
     email: str
@@ -20,10 +20,28 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
     
+class UserDelete(BaseModel):
+    is_deleted: bool
+    
 class User(UserBase):
     id: int
     is_active: bool
-    item: list[Item] = []
+    is_deleted: bool
+    items: list[Item] = []
     
     class Config:
-        orm_mode = True
+        from_attributes = True
+        
+class ProfileBase(BaseModel):
+    full_name: str
+    age: int
+    
+class ProfileCreate(ProfileBase):
+    pass
+
+class Profile(ProfileBase):
+    id: int
+    user_id: int
+    
+    class Config:
+        from_attributes = True
