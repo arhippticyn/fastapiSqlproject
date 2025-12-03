@@ -32,16 +32,3 @@ class User(UserBase):
     class Config:
         from_attributes = True
         
-class ProfileBase(BaseModel):
-    full_name: str
-    age: int
-    
-class ProfileCreate(ProfileBase):
-    pass
-
-class Profile(ProfileBase):
-    id: int
-    user_id: int
-    
-    class Config:
-        from_attributes = True

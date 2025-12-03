@@ -4,7 +4,7 @@ from . import models, schemas, crud
 from sqlalchemy.orm import Session
 
 models.Base.metadata.create_all(bind=engine)
-
+    
 app = FastAPI()
 
 def get_db():
@@ -54,21 +54,7 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     crud.delete_user(db=db ,user=user)
     return 'User was deleted'
      
-@app.post('/users/{users_id}/profile')
-def create_profile(users_id: int, profile: schemas.ProfileCreate, db: Session = Depends(get_db)):
-    db_profile = crud.get_profile(db=db, id = users_id)
-    if db_profile:
-        raise HTTPException(status_code=400, detail='Profile is already registered')
-    return crud.create_profile(db=db, user_id=users_id, profile=profile)
-
-@app.get('/profile')
-def read_profile(user_id: int, db: Session = Depends(get_db)):
-    return crud.get_profile(db=db, id=user_id)
-
 @app.patch('/items/{user_id}')
 def update_item(user_id: int, new_item: schemas.ItemBase, db: Session = Depends(get_db)):
     return crud.update_user_item(db=db, user_id=user_id, update_data=new_item)
 
-@app.patch('/users/{user_id}/soft_delete', response_model=schemas.User)
-def update_user_soft_delete(user_id: int, new_deleted: schemas.UserDelete, db: Session = Depends(get_db)):
-    return crud.update_soft_delete(db=db, user_id=user_id, new_deleted=new_deleted)
